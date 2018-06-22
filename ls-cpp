@@ -1,0 +1,29 @@
+#!/bin/bash
+
+cd "$(dirname "$0")"
+source "./lswrapper-util.sh"
+
+ls_lang="cpp"
+ls_exec_cmd=("./bin/clangd")
+
+ls_init() {
+    clang_ver="6.0.0"
+    case "$(uname)" in
+        Linux)
+            clang_pkg="x86_64-linux-gnu-ubuntu-14.04"
+            ;;
+        Darwin)
+            clang_pkg="x86_64-apple-darwin"
+            ;;
+        *)
+            echo >&2 "platform not supported: $(uname)"
+            exit 255
+            ;;
+    esac
+
+    tmpdir="$(mktemp -d)"
+    ls_download "$tmpdir" "http://releases.llvm.org/$clang_ver/clang+llvm-$clang_ver-$clang_pkg.tar.xz"
+    tar --strip 1 -xf "$tmpdir/clang+llvm-$clang_ver-$clang_pkg.tar.xz"
+}
+
+ls_main

@@ -1,0 +1,48 @@
+#!/bin/bash
+
+cd "$(dirname "$0")"
+source "./lswrapper-util.sh"
+
+ls_lang="java"
+ls_exec_cmd=("./eclipse.jdt.ls")
+
+ls_init() {
+    case "$(uname)" in
+        Linux)
+            platform="linux"
+            ;;
+        Darwin)
+            platform="mac"
+            ;;
+        *)
+            echo >2 "unsupported platform: $(uname)"
+            ;;
+    esac
+
+    tmpdir="$(mktemp -d)"
+    ls_download "$tmpdir" 'https://mirrors.tuna.tsinghua.edu.cn/eclipse/jdtls/milestones/0.23.0/jdt-language-server-0.23.0-201807311810.tar.gz'
+    ls_download "$tmpdir" 'https://projectlombok.org/downloads/lombok.jar'
+    tar -xf "$tmpdir/jdt-language-server"-*.tar.gz
+    mv "$tmpdir/lombok.jar" "$PWD"
+
+    echo '#!/bin/bash
+        cd "$(dirname "$0")"
+
+        LOMBOK_JAR_PATH="$PWD/lombok.jar"
+        export JAVA_TOOL_OPTIONS="-javaagent:$LOMBOK_JAR_PATH -Xbootclasspath/p:$LOMBOK_JAR_PATH"
+
+        java \
+        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044 \
+        -Declipse.application=org.eclipse.jdt.ls.core.id1 \
+        -Dosgi.bundles.defaultStartLevel=4 \
+        -Declipse.product=org.eclipse.jdt.ls.core.product \
+        -Dlog.level=ALL \
+        -noverify \
+        -Xmx1G \
+        -jar plugins/org.eclipse.equinox.launcher_*.jar \
+        -configuration ./config_'"$platform"'
+    ' >"eclipse.jdt.ls" && chmod +x "eclipse.jdt.ls"
+}
+
+ls_require_command java
+ls_main

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+cd "$(dirname "$0")"
+source "./lswrapper-util.sh"
+
+ls_lang="python"
+ls_exec_cmd=("./bin/pyls")
+
+ls_init() {
+    pip3 install --install-option="--prefix=$PWD" --ignore-installed "python-language-server[all]"
+}
+
+ls_require_command python3
+ls_require_command pip3
+
+export PYTHONPATH="$PYTHONPATH:$(ls_data_path)/lib/python3.6/site-packages"
+echo "$PYTHONPATH"
+ls_main

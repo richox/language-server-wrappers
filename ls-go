@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cd "$(dirname "$0")"
+source "./lswrapper-util.sh"
+
+ls_lang="go"
+ls_exec_cmd=("./bin/go-langserver" -gocodecompletion)
+
+ls_init() {
+    GOPATH="$PWD" go get -u github.com/sourcegraph/go-langserver
+}
+
+ls_require_command go
+ls_main

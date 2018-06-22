@@ -1,0 +1,15 @@
+#!/bin/bash
+
+cd "$(dirname "$0")"
+source "./lswrapper-util.sh"
+
+ls_lang="javascript"
+ls_exec_cmd=("node" "node_modules/javascript-typescript-langserver/lib/language-server-stdio")
+
+ls_init() {
+    npm install javascript-typescript-langserver
+}
+
+ls_require_command node
+ls_require_command npm
+ls_main

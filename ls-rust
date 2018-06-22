@@ -1,0 +1,23 @@
+#!/bin/bash
+
+cd "$(dirname "$0")"
+source "./lswrapper-util.sh"
+
+ls_lang="rust"
+ls_exec_cmd=("./bin/rls")
+
+ls_init() {
+    curl "https://sh.rustup.rs" >rustup.sh
+    export RUSTUP_HOME="$PWD"
+    export CARGO_HOME="$PWD"
+    sh rustup.sh -y --no-modify-path --default-toolchain nightly
+    bin/rustup component add rust-analysis
+    bin/rustup component add rust-src
+    bin/rustup component add rls-preview
+}
+
+ls_require_command curl
+
+export RUSTUP_HOME="$(ls_data_path)"
+export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+ls_main

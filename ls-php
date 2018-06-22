@@ -1,0 +1,22 @@
+#!/bin/bash
+
+cd "$(dirname "$0")"
+source "./lswrapper-util.sh"
+
+ls_lang="php"
+ls_exec_cmd=("php" "vendor/felixfbecker/language-server/bin/php-language-server.php")
+
+ls_init() {
+    echo '{
+        "minimum-stability": "dev",
+        "prefer-stable": true
+    }' >composer.json
+
+    composer require felixfbecker/language-server
+    composer run-script --working-dir=vendor/felixfbecker/language-server parse-stubs
+}
+
+ls_require_command php
+ls_require_command composer
+
+ls_main
