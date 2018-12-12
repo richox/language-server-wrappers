@@ -10,10 +10,10 @@ ls_init() {
     curl "https://sh.rustup.rs" >rustup.sh
     export RUSTUP_HOME="$PWD"
     export CARGO_HOME="$PWD"
-    sh rustup.sh -y --no-modify-path --default-toolchain nightly
+    sh rustup.sh -y --no-modify-path --default-toolchain beta
     bin/rustup component add rust-analysis
     bin/rustup component add rust-src
-    bin/rustup component add rls-preview
+    bin/rustup component add rls
 }
 
 ls_require_command curl
