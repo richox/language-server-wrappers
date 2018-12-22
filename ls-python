@@ -13,6 +13,5 @@ ls_init() {
 ls_require_command python3
 ls_require_command pip3
 
-export PYTHONPATH="$PYTHONPATH:$(ls_data_path)/lib/python3.7/site-packages"
-echo "$PYTHONPATH"
+export PYTHONPATH="$PYTHONPATH:$(echo "$(ls_data_path)"/lib/python3.*)"/site-packages
 ls_main
