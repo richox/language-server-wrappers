@@ -20,7 +20,7 @@ ls_init() {
     esac
 
     tmpdir="$(mktemp -d)"
-    ls_download "$tmpdir" 'https://mirrors.tuna.tsinghua.edu.cn/eclipse/jdtls/milestones/0.23.0/jdt-language-server-0.23.0-201807311810.tar.gz'
+    ls_download "$tmpdir" 'https://mirrors.tuna.tsinghua.edu.cn/eclipse/jdtls/milestones/0.30.0/jdt-language-server-0.30.0-201812180348.tar.gz'
     ls_download "$tmpdir" 'https://projectlombok.org/downloads/lombok.jar'
     tar -xf "$tmpdir/jdt-language-server"-*.tar.gz
     mv "$tmpdir/lombok.jar" "$PWD"
