@@ -47,7 +47,7 @@ ls_data_path() {
 }
 
 ls_main() {
-    if ! (cd "$(ls_data_path)" && command -v "${ls_exec_cmd[0]}"); then
+    if ! (cd "$(ls_data_path)" && command -v "${ls_exec_cmd[0]}" &>/dev/null); then
         echo >&2 "warning: langserver binary not exists, running ls_init()..."
         rm -r -f "$(ls_data_path)"
         mkdir -p "$(ls_data_path)"
@@ -56,7 +56,7 @@ ls_main() {
             return 255
         fi
 
-        if ! (cd "$(ls_data_path)" && command -v "${ls_exec_cmd[0]}"); then
+        if ! (cd "$(ls_data_path)" && command -v "${ls_exec_cmd[0]}" &>/dev/null); then
             echo >&2 "error: executable not found: ${ls_exec_cmd[0]}"
             return 255
         fi
