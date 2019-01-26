@@ -20,7 +20,7 @@ ls_init() {
     esac
 
     tmpdir="$(mktemp -d)"
-    ls_download "$tmpdir" 'https://mirrors.tuna.tsinghua.edu.cn/eclipse/jdtls/milestones/0.30.0/jdt-language-server-0.30.0-201812180348.tar.gz'
+    ls_download "$tmpdir" 'https://mirrors.tuna.tsinghua.edu.cn/eclipse/jdtls/milestones/0.31.0/jdt-language-server-0.31.0-201901170528.tar.gz'
     ls_download "$tmpdir" 'https://projectlombok.org/downloads/lombok.jar'
     tar -xf "$tmpdir/jdt-language-server"-*.tar.gz
     mv "$tmpdir/lombok.jar" "$PWD"
@@ -30,9 +30,10 @@ ls_init() {
 
         LOMBOK_JAR_PATH="$PWD/lombok.jar"
         export JAVA_TOOL_OPTIONS="-javaagent:$LOMBOK_JAR_PATH -Xbootclasspath/p:$LOMBOK_JAR_PATH"
+        let port="10000 + $RANDOM % 10000"
 
         java \
-        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044 \
+        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=$port \
         -Declipse.application=org.eclipse.jdt.ls.core.id1 \
         -Dosgi.bundles.defaultStartLevel=4 \
         -Declipse.product=org.eclipse.jdt.ls.core.product \
